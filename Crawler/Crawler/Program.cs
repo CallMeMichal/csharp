@@ -27,6 +27,7 @@
             // w asynchronicznosci nie ma blokowania głownego wątku
             // poprzez await rozpakowywuje sie i dotaje do srodka zapytania 
             HttpResponseMessage result = await httpClient.GetAsync(url);
+            string content = await result.Content.ReadAsStringAsync();
 
            
 
