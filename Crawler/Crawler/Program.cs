@@ -1,4 +1,6 @@
-﻿namespace Crawler
+﻿using System.Text.RegularExpressions;
+
+namespace Crawler
 {
     internal class Program
     {
@@ -10,11 +12,13 @@
             }
 
             string url = args[0];
-
-            // zadanie http to klasa wbudowane
-            // ctr+kc comment
-            // ctr+ku uncomment
-
+            
+            url pattern = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)\r\n";
+            Regex urlRegex = new(pattern);
+            if (!urlRegex.IsMatch(url))
+            {
+                throw new ArgumentException();
+            }
 
             //stara wersja bez using
             HttpClient client = new();
@@ -35,3 +39,8 @@
         }
     }
 }
+
+
+// zadanie http to klasa wbudowane
+// ctr+kc comment
+// ctr+ku uncomment
