@@ -50,9 +50,24 @@ namespace Crawler
             Regex emailRegex new(emailPattern,RegexOptions.IgnoreCase);
 
             //zwraca emaile ktore spelnily oczekiwania
+            //4 wymaganie
             MatchCollection matchedEmails = emailRegex.Matches(htmlcontent)
+                if(matchedEmails.Count == 0) 
+            {
+                throwe new("Nie znaleziono adresow email");
+            }
+                //5 wymaganie :unikalne adresy email
+            HashSet<string> uniqueEmails = new();
 
+            foreach(var email in matchedEmails)
+            {
+                uniqueEmails.Add(email.ToString());
+            }
 
+            foreach (var email in uniqueEmails) 
+            {
+                Console.WriteLine(email);
+            }
 
         }
     }
