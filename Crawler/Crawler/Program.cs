@@ -5,7 +5,7 @@ namespace Crawler
 {
     internal class Program
     {
-        static async void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //1wymaganie
             if (args.Length == 0)
@@ -15,7 +15,7 @@ namespace Crawler
 
             string url = args[0];
             //2 wymaganie
-            url pattern = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)\r\n";
+            string pattern = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
             Regex urlRegex = new(pattern);
             if (!urlRegex.IsMatch(url))
             {
@@ -38,7 +38,7 @@ namespace Crawler
             //3 wymaganie
             if (!result.IsSuccessStatusCode)
             {
-                throw new Exception("bląd podczas pobierania strony")
+                throw new Exception("bląd podczas pobierania strony");
             }
             
             string content = await result.Content.ReadAsStringAsync();
@@ -47,14 +47,14 @@ namespace Crawler
             string htmlcontent = await result.Content.ReadAsStringAsync();
             // ignor case zabezpiecza przed duza litera jak ktos sie pomyli
             string emailPattern = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-            Regex emailRegex new(emailPattern,RegexOptions.IgnoreCase);
+            Regex emailRegex = new(emailPattern,RegexOptions.IgnoreCase);
 
             //zwraca emaile ktore spelnily oczekiwania
             //4 wymaganie
-            MatchCollection matchedEmails = emailRegex.Matches(htmlcontent)
+            MatchCollection matchedEmails = emailRegex.Matches(htmlcontent);
                 if(matchedEmails.Count == 0) 
             {
-                throwe new("Nie znaleziono adresow email");
+                throw new("Nie znaleziono adresow email");
             }
                 //5 wymaganie :unikalne adresy email
             HashSet<string> uniqueEmails = new();
